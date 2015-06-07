@@ -83,8 +83,9 @@ RUN update-alternatives --install \
   /usr/bin/javaws    javaws    "$JAVA_HOME/bin/javaws"    --slave \
   /usr/bin/keytool   keytool   "$JAVA_HOME/bin/keytool"
 
-COPY install_startssl-certs.sh /root/install_startssl-certs.sh
-RUN /root/install_startssl-certs.sh
+#https://github.com/atende/baseimage-jdk/blob/master/install_startssl-certs.sh
+#COPY install_startssl-certs.sh /root/install_startssl-certs.sh
+#RUN /root/install_startssl-certs.sh
 
 
 
