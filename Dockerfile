@@ -52,5 +52,6 @@ EXPOSE 9901
 WORKDIR $CROWD_INSTALL
 
 # Run in foreground
-CMD ["./start_crowd.sh", "-fg"]
+#CMD ["./start_crowd.sh", "-fg"]
+CMD ["/bin/bash", "-c", "${CROWD_INSTALL}/apache-tomcat/bin/catalina.sh run"]
 
