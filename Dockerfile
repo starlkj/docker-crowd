@@ -8,7 +8,7 @@ ENV DOWNLOAD_URL        https://downloads.atlassian.com/software/crowd/downloads
 ENV CROWD_HOME          /var/atlassian/application-data/crowd
 
 # Install Atlassian Stash to the following location
-ENV CROWD_INSTALL_DIR   /opt/atlassian/crowd
+ENV CROWD_INSTALL   /opt/atlassian/crowd
 
 
 # Use the default unprivileged account. This could be considered bad practice
@@ -27,17 +27,21 @@ RUN apt-get update -qq                                                          
     && apt-get autoremove --yes                                                   \
     && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
 
-RUN mkdir -p                             $CROWD_INSTALL_DIR
+RUN mkdir -p                             $CROWD_INSTALL
 
 
-RUN curl -L --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "$CROWD_INSTALL_DIR" \
-    && mkdir -p                          ${CROWD_INSTALL_DIR}                    \
-    && chmod -R 700                      ${CROWD_INSTALL_DIR}                    \
-    && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL_DIR}
+RUN curl -L --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "$CROWD_INSTALL" \
+    && mkdir -p                          ${CROWD_INSTALL}                    \
+    && chmod -R 700                      ${CROWD_INSTALL}                    \
+    && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL}
+
+
+RUN echo "crowd.home=${CROWD_HOME}/crowd" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
+RUN echo "crowd.openid.home=${CROWD_HOME}/openid" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
 
 USER ${RUN_USER}:${RUN_GROUP}
 
-VOLUME ["${CROWD_INSTALL_DIR}"]
+VOLUME ["${CROWD_INSTALL}"]
 
 # HTTP Port
 EXPOSE 9001
@@ -45,7 +49,7 @@ EXPOSE 9001
 # SSH Port
 EXPOSE 9901
 
-WORKDIR $CROWD_INSTALL_DIR
+WORKDIR $CROWD_INSTALL
 
 # Run in foreground
 CMD ["./start_crowd.sh", "-fg"]
