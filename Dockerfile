@@ -13,6 +13,29 @@ ENV CROWD_INSTALL   /opt/atlassian/crowd
 
 
 
+
+
+
+# Use the default unprivileged account. This could be considered bad practice
+# on systems where multiple processes end up being executed by 'daemon' but
+# here we only ever run one process anyway.
+ENV RUN_USER            daemon
+ENV RUN_GROUP           daemon
+
+
+# Install git, download and extract Stash and create the required directory layout.
+# Try to limit the number of RUN instructions to minimise the number of layers that will need to be created.
+RUN apt-get update -qq                                                            \
+    && apt-get install -y --no-install-recommends                                 \
+            git                                                                   \
+    && apt-get clean autoclean                                                    \
+    && apt-get autoremove --yes                                                   \
+    && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
+
+
+
+
+
 # Java Version
 ENV JAVA_VERSION_MAJOR 8
 ENV JAVA_VERSION_MINOR 45
@@ -67,21 +90,7 @@ RUN /root/install_startssl-certs.sh
 
 
 
-# Use the default unprivileged account. This could be considered bad practice
-# on systems where multiple processes end up being executed by 'daemon' but
-# here we only ever run one process anyway.
-ENV RUN_USER            daemon
-ENV RUN_GROUP           daemon
 
-
-# Install git, download and extract Stash and create the required directory layout.
-# Try to limit the number of RUN instructions to minimise the number of layers that will need to be created.
-RUN apt-get update -qq                                                            \
-    && apt-get install -y --no-install-recommends                                 \
-            git                                                                   \
-    && apt-get clean autoclean                                                    \
-    && apt-get autoremove --yes                                                   \
-    && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
 
 RUN mkdir -p                             $CROWD_INSTALL
 
