@@ -72,16 +72,16 @@ RUN curl -kLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=ac
 # Set environment
 ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:$JAVA_HOME/bin
-RUN update-alternatives --install \
-  /usr/bin/java      java      "$JAVA_HOME/bin/java"  200 --slave \
-  /usr/bin/jar       jar       "$JAVA_HOME/bin/jar"       --slave \
-  /usr/bin/jarsigner jarsigner "$JAVA_HOME/bin/jarsigner" --slave \
-  /usr/bin/javac     javac     "$JAVA_HOME/bin/javac"     --slave \
-  /usr/bin/javadoc   javadoc   "$JAVA_HOME/bin/javadoc"   --slave \
-  /usr/bin/javah     javah     "$JAVA_HOME/bin/javah"     --slave \
-  /usr/bin/javap     javap     "$JAVA_HOME/bin/javap"     --slave \
-  /usr/bin/javaws    javaws    "$JAVA_HOME/bin/javaws"    --slave \
-  /usr/bin/keytool   keytool   "$JAVA_HOME/bin/keytool"
+# RUN update-alternatives --install \
+#   /usr/bin/java      java      "$JAVA_HOME/bin/java"  200 --slave \
+#   /usr/bin/jar       jar       "$JAVA_HOME/bin/jar"       --slave \
+#   /usr/bin/jarsigner jarsigner "$JAVA_HOME/bin/jarsigner" --slave \
+#   /usr/bin/javac     javac     "$JAVA_HOME/bin/javac"     --slave \
+#   /usr/bin/javadoc   javadoc   "$JAVA_HOME/bin/javadoc"   --slave \
+#   /usr/bin/javah     javah     "$JAVA_HOME/bin/javah"     --slave \
+#   /usr/bin/javap     javap     "$JAVA_HOME/bin/javap"     --slave \
+#   /usr/bin/javaws    javaws    "$JAVA_HOME/bin/javaws"    --slave \
+#   /usr/bin/keytool   keytool   "$JAVA_HOME/bin/keytool"
 
 #https://github.com/atende/baseimage-jdk/blob/master/install_startssl-certs.sh
 #COPY install_startssl-certs.sh /root/install_startssl-certs.sh
@@ -113,7 +113,7 @@ VOLUME ["${CROWD_INSTALL}"]
 EXPOSE 8095
 
 # SSH Port
-#EXPOSE 9901
+EXPOSE 22
 
 WORKDIR $CROWD_INSTALL
 
