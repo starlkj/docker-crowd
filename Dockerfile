@@ -29,6 +29,9 @@ RUN apt-get update -qq                                                          
 
 RUN mkdir -p                             ${CROWD_INSTALL}
 
+RUN echo  ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz \
+ && echo tar -xz --strip=1 -C "${CROWD_INSTALL}"
+
 RUN curl -L --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "${CROWD_INSTALL}" \
     && chmod -R 700                      ${CROWD_INSTALL}                                                               \
     && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL}
