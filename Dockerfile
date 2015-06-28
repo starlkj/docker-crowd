@@ -27,7 +27,7 @@ RUN apt-get update -qq                                                          
     && apt-get autoremove --yes                                                   \
     && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
 
-RUN mkdir -p                             $CROWD_INSTALL
+RUN mkdir -p                             ${CROWD_INSTALL}
 
 RUN curl -L --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "$CROWD_INSTALL" \
     && chmod -R 700                      ${CROWD_INSTALL}                                                               \
