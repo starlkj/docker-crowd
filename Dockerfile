@@ -27,11 +27,10 @@ RUN apt-get update -qq                                                          
     && apt-get autoremove --yes                                                   \
     && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
 
-#RUN mkdir -p                             $CROWD_INSTALL
+RUN mkdir -p                             $CROWD_INSTALL
 
-RUN mkdir -p                             ${CROWD_INSTALL}                                                               \
-    && curl -L --silent                  ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "$CROWD_INSTALL" \
-    && chmod -R 700                      ${CROWD_INSTALL}                                                               \
+RUN curl -L --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "$CROWD_INSTALL"   \
+    && chmod -R 700                      ${CROWD_INSTALL}                                                              \
     && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL}
 
 RUN echo "crowd.home=${CROWD_HOME}/crowd" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
