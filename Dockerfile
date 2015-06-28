@@ -29,11 +29,8 @@ RUN apt-get update -qq                                                          
 
 RUN mkdir -p                             ${CROWD_INSTALL}
 
-RUN echo  ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz \
- && echo tar -xz --strip=1 -C "${CROWD_INSTALL}"
-
-RUN curl -kL --silent                     ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "${CROWD_INSTALL}" \
-    && chmod -R 700                      ${CROWD_INSTALL}                                                               \
+RUN curl -kL --silent                    ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "${CROWD_INSTALL}" \
+    && chmod -R 700                      ${CROWD_INSTALL}                                                                 \
     && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL}
 
 RUN echo "crowd.home=${CROWD_HOME}/crowd" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
@@ -47,11 +44,10 @@ VOLUME ["${CROWD_INSTALL}"]
 EXPOSE 8095
 
 # SSH Port
-EXPOSE 22
+EXPOSE 9901
 
 WORKDIR $CROWD_INSTALL
 
 # Run in foreground
-#CMD ["./start_crowd.sh", "-fg"]
 CMD ["/bin/bash", "-c", "${CROWD_INSTALL}/apache-tomcat/bin/catalina.sh run"]
 

@@ -19,6 +19,9 @@ sudo docker rm crowd
 
 sudo docker build
 
+docker build -t crowd .
+
+
 
 
 sudo docker run -u root -v /data/crowd:/var/atlassian/application-data/crowd crowd chown -R daemon /var/atlassian/application-data/crowd
