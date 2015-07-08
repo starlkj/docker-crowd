@@ -45,6 +45,7 @@ EXPOSE 8095
 
 # SSH Port
 EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
 
 WORKDIR $CROWD_INSTALL
 
