@@ -1,54 +1,36 @@
+# Basics
+#
 FROM base
+#MAINTAINER Nicola Paolucci <npaolucci@atlassian.com>
 
-ENV CROWD_VERSION 2.8.3
+# Install Crowd
 
-ENV DOWNLOAD_URL        https://downloads.atlassian.com/software/crowd/downloads/atlassian-crowd-
+ENV CROWD_VERSION 2.7.2
+RUN curl -Lks http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-${CROWD_VERSION}.tar.gz -o /root/crowd.tar.gz
+RUN /usr/sbin/useradd --create-home --home-dir /opt/crowd --groups atlassian --shell /bin/bash crowd
+RUN tar zxf /root/crowd.tar.gz --strip=1 -C /opt/crowd
+RUN echo "crowd.home = /opt/atlassian-home" > /opt/crowd/crowd-webapp/WEB-INF/classes/crowd-init.properties
+RUN mv /opt/crowd/apache-tomcat/webapps/ROOT /opt/crowd/splash-webapp
+RUN mv /opt/crowd/apache-tomcat/conf/Catalina/localhost /opt/crowd/webapps
+RUN mkdir /opt/crowd/apache-tomcat/conf/Catalina/localhost
 
-# https://confluence.atlassian.com/display/CROWD/Specifying+your+Crowd+Home+Directory
-ENV CROWD_HOME          /var/atlassian/application-data/crowd
+ENV CROWD_URL http://localhost:8095/crowd
+ENV LOGIN_BASE_URL http://localhost:8095
 
-# Install Atlassian Stash to the following location
-ENV CROWD_INSTALL   /opt/atlassian/crowd
+ENV CROWD_CONTEXT crowd
+ENV CROWDID_CONTEXT openidserver
+ENV OPENID_CLIENT_CONTEXT openidclient
+ENV DEMO_CONTEXT demo
+ENV SPLASH_CONTEXT ROOT
 
+ADD splash-context.xml /opt/crowd/webapps/splash.xml
+RUN chown -R crowd:crowd /opt/crowd
+ADD launch.bash /launch
 
-# Use the default unprivileged account. This could be considered bad practice
-# on systems where multiple processes end up being executed by 'daemon' but
-# here we only ever run one process anyway.
-ENV RUN_USER            daemon
-ENV RUN_GROUP           daemon
+# Launching Crowd
 
-
-# Install git, download and extract Stash and create the required directory layout.
-# Try to limit the number of RUN instructions to minimise the number of layers that will need to be created.
-RUN apt-get update -qq                                                            \
-    && apt-get install -y --no-install-recommends                                 \
-            git                                                                   \
-    && apt-get clean autoclean                                                    \
-    && apt-get autoremove --yes                                                   \
-    && rm -rf                  /var/lib/{apt,dpkg,cache,log}/
-
-RUN mkdir -p                             ${CROWD_INSTALL}
-
-RUN curl -kL --silent                    ${DOWNLOAD_URL}${CROWD_VERSION}.tar.gz | tar -xz --strip=1 -C "${CROWD_INSTALL}" \
-    && chmod -R 700                      ${CROWD_INSTALL}                                                                 \
-    && chown -R ${RUN_USER}:${RUN_GROUP} ${CROWD_INSTALL}
-
-RUN echo "crowd.home=${CROWD_HOME}/crowd" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
-RUN echo "crowd.openid.home=${CROWD_HOME}/openid" >> "${CROWD_INSTALL}/crowd-webapp/WEB-INF/classes/crowd-init.properties"
-
-USER ${RUN_USER}:${RUN_GROUP}
-
-VOLUME ["${CROWD_INSTALL}"]
-
-# HTTP Port
+VOLUME /opt/atlassian-home
+WORKDIR /opt/crowd
 EXPOSE 8095
-
-# SSH Port
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
-
-WORKDIR $CROWD_INSTALL
-
-# Run in foreground
-CMD ["/bin/bash", "-c", "${CROWD_INSTALL}/apache-tomcat/bin/catalina.sh run"]
-
+USER crowd
+CMD ["/launch"]

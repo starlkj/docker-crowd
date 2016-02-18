@@ -28,3 +28,5 @@ sudo docker run -u root -v /data/crowd:/var/atlassian/application-data/crowd cro
 
 sudo docker run -v /data/crowd:/var/atlassian/application-data/crowd --name="crowd" -d -p 8095:8095 -p 9901:9901 crowd
 
+
+
