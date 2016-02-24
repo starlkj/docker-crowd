@@ -4,10 +4,9 @@ set -o errexit
 . /usr/local/share/atlassian/common.bash
 
 set_java_home
-ls -l $JAVA_HOME
 
-ls -l /usr/local/bin/own-volume
 sudo /usr/local/bin/own-volume
+
 cd apache-tomcat/conf/Catalina/localhost
 for k in $(ls) ; do
   unlink $k
