@@ -3,7 +3,7 @@ set -o errexit
 
 . /usr/local/share/atlassian/common.bash
 
-sudo own-volume
+sudo /usr/local/bin/own-volume
 cd apache-tomcat/conf/Catalina/localhost
 for k in $(ls) ; do
   unlink $k
