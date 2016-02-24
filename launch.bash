@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o errexit
 
+ls -l /usr/local/share/atlassian/
 . /usr/local/share/atlassian/common.bash
 
 sudo /usr/local/bin/own-volume
