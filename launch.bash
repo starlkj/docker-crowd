@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o errexit
 
-export JAVA_HOME /opt/jdk
+export JAVA_HOME=/opt/jdk
 export PATH $PATH:$JAVA_HOME/bin
 
 . /usr/local/share/atlassian/common.bash
