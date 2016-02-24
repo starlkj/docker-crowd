@@ -5,7 +5,7 @@ FROM docker-atlassian-base
 
 # Install Crowd
 
-ENV CROWD_VERSION 2.7.2
+ENV CROWD_VERSION 2.8.4
 RUN curl -Lks http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-${CROWD_VERSION}.tar.gz -o /root/crowd.tar.gz
 RUN /usr/sbin/useradd --create-home --home-dir /opt/crowd --groups atlassian --shell /bin/bash crowd
 RUN tar zxf /root/crowd.tar.gz --strip=1 -C /opt/crowd
