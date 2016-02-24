@@ -1,6 +1,10 @@
 # docker-crowd
 Docker Atlassian Crowd
 
+docker build -t docker-crowd .
+
+docker run -e CROWD_URL=http://localhost:8095/crowd -e DATABASE_URL=mysql://192.168.0.100/crowd?autoReconnect=true&amp;characterEncoding=utf8&amp;useUnicode=true -e CROWDID_CONTEXT=ROOT -e CROWD_CONTEXT= -e SPLASH_CONTEXT= -e DEMO_CONTEXT= -e OPENID_CLIENT_CONTEXT= -p 8095:8095 docker-crowd
+
 
 
 docker run -u root -v /data/crowd:/var/atlassian/application-data/crowd atlassian/crowd

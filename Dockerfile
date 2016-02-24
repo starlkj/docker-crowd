@@ -1,6 +1,6 @@
 # Basics
 #
-FROM base
+FROM docker-atlassian-base
 #MAINTAINER Nicola Paolucci <npaolucci@atlassian.com>
 
 # Install Crowd
