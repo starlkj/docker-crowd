@@ -1,9 +1,9 @@
 #!/bin/bash
 set -o errexit
 
-ls -l /usr/local/share/atlassian/
 . /usr/local/share/atlassian/common.bash
 
+ls -l /usr/local/bin/own-volume
 sudo /usr/local/bin/own-volume
 cd apache-tomcat/conf/Catalina/localhost
 for k in $(ls) ; do
