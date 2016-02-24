@@ -26,6 +26,7 @@ ENV SPLASH_CONTEXT ROOT
 ADD splash-context.xml /opt/crowd/webapps/splash.xml
 RUN chown -R crowd:crowd /opt/crowd
 ADD launch.bash /launch
+RUN chmod +x /launch
 
 # Launching Crowd
 
