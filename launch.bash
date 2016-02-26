@@ -64,6 +64,22 @@ config_line() {
     fi
 }
 
+write_line() {
+        echo $2=$3 >> $1
+}
+
+config_crowdid_jdbc_properties() {
+    JDBC_PROPS_FILE="crowd-openidserver-webapp\WEB-INF\classes\jdbc.properties"
+    if [ -f $JDBC_PROPS_FILE ];
+    then
+        :
+    else
+        write_line $JDBC_PROPS_FILE "hibernate.connection.datasource" "java\:comp/env/jdbc/CrowdIDDS"
+        write_line $JDBC_PROPS_FILE "hibernate.dialect" "$CROWDIDDB_DIALECT"
+        write_line $JDBC_PROPS_FILE "hibernate.transaction.factory_class" "org.hibernate.transaction.JDBCTransactionFactory"
+    fi
+}
+
 if [ -n "$CROWD_CONTEXT" ]; then
   if [ -z "$CROWDDB_URL" -a -n "$DATABASE_URL" ]; then
     used_database_url=1
@@ -120,6 +136,10 @@ config_line build.properties crowd.url "$CROWD_URL"
 if [ -f "/opt/atlassion-home/crowd.properties" ]; then
   config_line /opt/atlassion-home/crowd.properties crowd.server.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties crowd.server.url)"
   config_line /opt/atlassion-home/crowd.properties application.login.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties application.login.url)"
+fi
+
+if [ -n "$CROWDID_CONTEXT" ]; then
+    config_crowdid_jdbc_properties
 fi
 
 apache-tomcat/bin/catalina.sh run
