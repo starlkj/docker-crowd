@@ -138,8 +138,8 @@ if [ -f "/opt/atlassion-home/crowd.properties" ]; then
   config_line /opt/atlassion-home/crowd.properties application.login.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties application.login.url)"
 fi
 
-if [ -n "$CROWDID_CONTEXT" ]; then
-    config_crowdid_jdbc_properties
-fi
+#if [ -n "$CROWDID_CONTEXT" ]; then
+#    config_crowdid_jdbc_properties
+#fi
 
 apache-tomcat/bin/catalina.sh run
