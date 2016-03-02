@@ -1,11 +1,7 @@
 #!/bin/bash
-set -o errexit
+set -e
 
-. /usr/local/share/atlassian/common.bash
-
-set_java_home
-
-sudo /usr/local/bin/own-volume
+. /usr/local/share/atlassian/common.sh
 
 cd apache-tomcat/conf/Catalina/localhost
 for k in $(ls) ; do
@@ -14,29 +10,29 @@ done
 
 if [ -n "$DEMO_CONTEXT" ]; then
   echo "Installing demo at $DEMO_CONTEXT"
-  ln -s /opt/crowd/webapps/demo.xml ${DEMO_CONTEXT}.xml
+  ln -s $CROWD_INST/webapps/demo.xml ${DEMO_CONTEXT}.xml
 fi
 
 if [ -n "$SPLASH_CONTEXT" ]; then
   echo "Installing splash as $SPLASH_CONTEXT"
-  ln -s /opt/crowd/webapps/splash.xml ${SPLASH_CONTEXT}.xml
+  ln -s $CROWD_INST/webapps/splash.xml ${SPLASH_CONTEXT}.xml
 fi
 
 if [ -n "$OPENID_CLIENT_CONTEXT" ]; then
   echo "Installing OpenID client at $OPENID_CLIENT_CONTEXT"
-  ln -s /opt/crowd/webapps/openidclient.xml ${OPENID_CLIENT_CONTEXT}.xml
+  ln -s $CROWD_INST/webapps/openidclient.xml ${OPENID_CLIENT_CONTEXT}.xml
 fi
 
 if [ -n "$CROWDID_CONTEXT" ]; then
   echo "Installing OpenID server at $CROWDID_CONTEXT"
-  ln -s /opt/crowd/webapps/openidserver.xml ${CROWDID_CONTEXT}.xml
+  ln -s $CROWD_INST/webapps/openidserver.xml ${CROWDID_CONTEXT}.xml
 fi
 
 if [ -n "$CROWD_CONTEXT" ]; then
   echo "Installing Crowd at $CROWD_CONTEXT"
-  ln -s /opt/crowd/webapps/crowd.xml ${CROWD_CONTEXT}.xml
+  ln -s $CROWD_INST/webapps/crowd.xml ${CROWD_CONTEXT}.xml
 fi
-cd /opt/crowd
+cd $CROWD_INST
 
 if [ -z "$DEMO_LOGIN_URL" ]; then
   if [ "$DEMO_CONTEXT" == "ROOT" ]; then
@@ -133,13 +129,9 @@ config_line build.properties crowd.url "$CROWD_URL"
 
 ./build.sh
 
-if [ -f "/opt/atlassion-home/crowd.properties" ]; then
-  config_line /opt/atlassion-home/crowd.properties crowd.server.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties crowd.server.url)"
-  config_line /opt/atlassion-home/crowd.properties application.login.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties application.login.url)"
+if [ -f "$CROWD_HOME/crowd.properties" ]; then
+  config_line $CROWD_HOME/crowd.properties crowd.server.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties crowd.server.url)"
+  config_line $CROWD_HOME/crowd.properties application.login.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties application.login.url)"
 fi
 
-#if [ -n "$CROWDID_CONTEXT" ]; then
-#    config_crowdid_jdbc_properties
-#fi
-
-apache-tomcat/bin/catalina.sh run
+rm $CROWD_INST/.crowd-is-not-configured
