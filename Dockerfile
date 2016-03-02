@@ -1,4 +1,4 @@
-FROM descoped/docker-atlassian-base
+FROM descoped/atlassian-base
 MAINTAINER Ove Ranheim <oranheim@gmail.com>
 
 # Install Crowd
