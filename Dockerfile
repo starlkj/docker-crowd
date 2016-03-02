@@ -22,7 +22,7 @@ ENV LOGIN_BASE_URL http://localhost:8095
 ADD configure.bash /configure
 RUN chmod +x /configure
 
-RUN curl -Lks http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-$CROWD_VERSION.tar.gz -o /root/crowd.tar.gz \
+RUN curl -Lk http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-$CROWD_VERSION.tar.gz -o /root/crowd.tar.gz \
     && useradd -r --create-home --home-dir $CROWD_INST --groups $GID --shell /bin/bash $UID \
     && tar zxf /root/crowd.tar.gz --strip=1 -C $CROWD_INST \
     && rm /root/crowd.tar.gz \
