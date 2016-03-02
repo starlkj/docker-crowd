@@ -82,7 +82,7 @@ if [ -n "$CROWD_CONTEXT" ]; then
     CROWDDB_URL="$DATABASE_URL"
   fi
   if [ -n "$CROWDDB_URL" ]; then
-    extract_database_url "$CROWDDB_URL" CROWDDB /opt/crowd/apache-tomcat/lib
+    extract_database_url "$CROWDDB_URL" CROWDDB $CROWD_INST/apache-tomcat/lib
     CROWDDB_JDBC_URL="$(xmlstarlet esc "$CROWDDB_JDBC_URL")"
     cat << EOF > webapps/crowd.xml
     <Context docBase="../../crowd-webapp" useHttpOnly="true">
@@ -107,7 +107,7 @@ if [ -n "$CROWDID_CONTEXT" ]; then
     CROWDIDDB_URL="$DATABASE_URL"
   fi
   if [ -n "$CROWDIDDB_URL" ]; then
-    extract_database_url "$CROWDIDDB_URL" CROWDIDDB "/opt/crowd/apache-tomcat/lib"
+    extract_database_url "$CROWDIDDB_URL" CROWDIDDB "$CROWD_INST/apache-tomcat/lib"
     CROWDIDDB_JDBC_URL="$(xmlstarlet esc "$CROWDIDDB_JDBC_URL")"
     cat << EOF > webapps/openidserver.xml
     <Context docBase="../../crowd-openidserver-webapp">
