@@ -5,7 +5,7 @@ MAINTAINER Ove Ranheim <oranheim@gmail.com>
 ENV CROWD_VERSION 2.8.4
 
 ENV CROWD_INST /opt/crowd
-ENV CROWD_HOME /opt/atlassian-home
+ENV CROWD_HOME /var/atlassian-home
 
 ENV UID crowd
 ENV GID atlassian
