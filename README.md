@@ -10,7 +10,7 @@ What follows is a short description of each component and the configuration opti
 
 The examples shown below assumes you will use a MySQL database.
 
-### Pre-requisites
+### Prerequisites
 
 * MySQL 5.6 (it is not compatible with MySQL 5.7)
 * Postgres driver is shipped with the Crowd distribution, so please confer the documentation for compatibility
