@@ -45,11 +45,14 @@ http://localhost:8095/
 
 #### Database Setup
 
-MySQL:
+Simple MySQL setup:
 
 ```
-CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
-CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
+$ $DB_PWD=<pwd>
+$ docker run -d -p 3306:3306 --name mysql -v /var/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$DB_PWD mysql/mysql-server:5.6
+$ mysql -u root -p$DB_PWD
+$ CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
+$ CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
 ```
 
 ### Environement variables
@@ -114,9 +117,7 @@ DEMO_LOGIN_URL | The URL that crowd will redirect the user to this URL if their 
 
 ## Source code
 
-If you want to contribute to this project or make use of the source code; you'll find it on GitHub:
-
-[https://github.com/descoped/docker-crowd](https://github.com/descoped/docker-crowd)
+If you want to contribute to this project or make use of the source code; you'll find it on [GitHub]((https://github.com/descoped/docker-crowd)):
 
 ### Building the image
 
