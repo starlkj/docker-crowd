@@ -15,7 +15,7 @@ The examples shown below assumes you will use a MySQL database.
 * MySQL 5.6 (it is not compatible with MySQL 5.7)
 * Postgres driver is shipped with the Crowd distribution, so please confer the documentation for compatibility
 
-## Execution
+### Execution
 
 Run docker using port 8095 on your host (if available):
 
@@ -41,9 +41,9 @@ The mappable VOLUME is: `/var/atlassian-home`
 http://localhost:8095/
 ```
 
-## Configuration
+### #Configuration
 
-### Database Setup
+#### Database Setup
 
 MySQL:
 
@@ -52,9 +52,9 @@ CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
 CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
 ```
 
-## Environement variables
+### Environement variables
 
-### Default welcome splash pages
+#### Default welcome splash pages
 
 This component serves just as a welcome page and since it is by default loaded as the root context will be the first thing you see when going to http://localhost:8095. As such it has links to the other components but keep in mind that these links will not be updated should you change the context path of any of the components.
 
@@ -65,7 +65,7 @@ Variable       | Function
 SPLASH_CONTEXT | Context path of the splash pages. Defaults to ```ROOT``` as this webapp serves as a welcome page and you will usually just want to set this to blank to not load this component.
 
 
-### Crowd
+#### Crowd
 
 The main component included and really the only component that you truly need. This component needs a database but can use an embedded HSQLDB for testing purposes and so the database related variables are not mandatory. 
 
@@ -77,7 +77,7 @@ CROWDDB_URL   | Connection URL specifying where and how to connect to a database
 DATABASE_URL  | If only Crowd and not CrowdID is set to load you can use this variable as an alternative to the ```CROWDDB_URL``` variable.
 
 
-### CrowdID
+#### CrowdID
 
 The bundled OpenID server. Like the Crowd component this also needs a database and it is imperative that this be independent of the Crowd database. 
 
@@ -91,7 +91,7 @@ LOGIN_BASE_URL    | Combined with ```CROWDID_CONTEXT``` to set the ```CROWDID_LO
 CROWDID_LOGIN_URL | The URL that crowd will redirect the user to this URL if their authentication token expires or is invalid due to security restrictions.
 
 
-### OpenID client
+#### OpenID client
 
 An OpenID client that can be used to test the CrowdID integration.
 
@@ -100,7 +100,7 @@ Variable              | Function
 OPENID_CLIENT_CONTEXT | Context path of the client. Defaults to ```openidclient```.
 
 
-### Demo webapp
+#### Demo webapp
 
 A demonstration webapp that shows how Crowd integration works.
 
