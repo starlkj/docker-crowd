@@ -41,7 +41,7 @@ The mappable VOLUME is: `/var/atlassian-home`
 http://localhost:8095/
 ```
 
-### #Configuration
+### Configuration
 
 #### Database Setup
 
