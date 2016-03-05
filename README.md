@@ -2,9 +2,9 @@
 
 ## About
 
-The docker image is based on the standalone install of Crowd and as such consists of several independent components that each have several configurable options and that can also be entirely disabled. The configuration options themselves are set by setting environment variables when running the image
+Crowd is an Identity Management Application for web apps that are used by other Atlassian application to simplify access control. Crowd consists of several independent components that are configurable by setting environment variables when running the image.
 
-What follows is a short description of each component and the configuration options that affect that component. For all other aspects about configuring, using and administering Crowd please see [The Official Crowd Documentation](https://confluence.atlassian.com/display/CROWD/Crowd+Documentation)
+For all other aspects about configuring, using and administering Crowd please see [The Official Crowd Documentation](https://confluence.atlassian.com/display/CROWD/Crowd+Documentation).
 
 ## How to use?
 
@@ -12,24 +12,25 @@ The examples shown below assumes you will use a MySQL database.
 
 ### Prerequisites
 
-* MySQL 5.6 (it is not compatible with MySQL 5.7)
-* Postgres driver is shipped with the Crowd distribution, so please confer the documentation for compatibility
+* MySQL 5.5 or 5.6 (please notice that Crowd is not compatible with MySQL 5.7)
+* PostgreSQL 8.4+
+
+> The Postgres driver is shipped with the Crowd distribution, whereas the MySQL driver will be downloaded when running the image.
 
 #### Database Setup
 
-MySQL setup:
+MySQL setup (assuming that MySQL isn't installed yet):
 
 ```
-$ $DB_PWD=<pwd>
-$ docker run -d -p 3306:3306 --name mysql -v /var/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$DB_PWD mysql/mysql-server:5.6
-$ mysql -u root -p$DB_PWD
-$ CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
-$ CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
+$ docker run -d -p 3306:3306 --name mysql -v /var/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=[db-password] mysql/mysql-server:5.6
+$ mysql -h 172.17.0.2 -u root -p[db-password]
+CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
+CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
 ```
 
-If you use a default Docker installation the assigned IP for the first docker container, in this case mysql, the IP 172.17.0.2 will be designated the mysql instance.
+If you use a default Docker installation with no images installed, the assigned IP for MySQL will be: `172.17.0.2`.
 
-### Execution
+### Installation
 
 Run docker using port 8095 on your host (if available):
 
@@ -37,12 +38,12 @@ Run docker using port 8095 on your host (if available):
 docker run -p 8095:8095 descoped/crowd
 ```
 
-Run with repo outside the container using an external volume:
+Run with data outside the container using a volume:
 
 ```
 $ DB_UID=root
 $ DB_PWD=<pwd>
-$ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://$DB_UID:$DB_PWD@172.17.0.2/crowd -e CROWDIDDB_URL=mysql://$DB_UID:$DB_PWD@172.17.0.2/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
+$ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowd -e CROWDIDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
 ```
 
 #### Workaround for error with Remote address
@@ -51,8 +52,8 @@ After the initial installation you may experience an issue where you are not all
 
 ```
 $ mysql -h 172.17.0.2 -u root -p$PWD crowd;
-SELECT id FROM cwd_application WHERE application_name = "crowd"; (expected return value: 2)
-SELECT id FROM cwd_application WHERE application_name = "crowd-openid-server"; (expected return value: 3)
+SELECT id FROM cwd_application WHERE application_name = "crowd";               # expected return value: 2
+SELECT id FROM cwd_application WHERE application_name = "crowd-openid-server"; # expected return value: 3
 INSERT INTO cwd_application_address (APPLICATION_ID, REMOTE_ADDRESS) VALUES (2,'172.17.0.1');
 INSERT INTO cwd_application_address (APPLICATION_ID, REMOTE_ADDRESS) VALUES (3,'172.17.0.1');
 ```
@@ -66,28 +67,38 @@ $ docker crowd start
 
 You should now be able to login to Crowd.
 
-### Docker Volume
+#### Docker Volume
 
 The mappable VOLUME is: `/var/atlassian-home`
 
-### Browser URL:
+#### Browser URL:
 
 ```
-http://localhost:8095/
+http://192.168.1.2:8095/
 ```
+
+The host IP is assumed to be `192.168.1.2`.
 
 ### Configuration
 
 #### Database connection
 
 The connection to the database can be specified with an URL of the format:
-
 ```
 [database type]://[username]:[password]@[host]:[port]/[database name]
 ```
-Where ```database type``` is either ```mysql``` or ```postgresql``` and the full URL might look like this:
+Where ```database type``` is either ```mysql``` or ```postgresql``` and the full URL look like this:
+
+**MySQL:**
+
 ```
-postgresql://jira:jellyfish@172.17.0.2/jiradb
+mysql://<username>:<password>@172.17.0.2/jiradb
+```
+
+**PostgreSQL:**
+
+```
+postgresql://<username>:<password>@172.17.0.2/jiradb
 ```
 
 ### Environement variables
