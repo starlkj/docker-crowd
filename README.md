@@ -1,4 +1,4 @@
-# Descoped Docker Crowd
+# Descoped Atlassian Crowd
 
 ## About
 
@@ -191,4 +191,4 @@ docker build -t descoped/crowd .
 
 ### Further reading
 
-* Reference to [base image](https://hub.docker.com/r/descoped/atlassian-base/).
+* Reference to [base image](https://hub.docker.com/r/descoped/atlassian-base/)
