@@ -30,6 +30,16 @@ CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
 
 If you use a default Docker installation with no images installed, the assigned IP for MySQL will be: `172.17.0.2`.
 
+Optionally you may configure security constraints by:
+
+```
+GRANT ALL PRIVILEGES ON crowd.* TO '[appuser]'@'172.17.0.3' IDENTIFIED BY '[apppassword]' with grant option;
+GRANT ALL PRIVILEGES ON crowdid.* TO '[appuser]'@'172.17.0.3' IDENTIFIED BY '[apppassword]' with grant option;
+```
+
+> Please notice that the `[appuser]` and `[apppassword]` must be configured to what is appropriate for your system.
+
+
 ### Installation
 
 Run docker using port 8095 on your host (if available):
@@ -43,6 +53,7 @@ Run with data outside the container using a volume:
 ```
 $ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowd -e CROWDIDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
 ```
+
 
 #### Workaround for error with Remote address
 
@@ -75,6 +86,7 @@ The mappable VOLUME is: `/var/atlassian-home`
 http://192.168.1.2:8095/
 ```
 
+
 The host IP is assumed to be `192.168.1.2`.
 
 ### Configuration
@@ -85,6 +97,7 @@ The connection to the database can be specified with an URL of the format:
 ```
 [database type]://[username]:[password]@[host]:[port]/[database name]
 ```
+
 Where ```database type``` is either ```mysql``` or ```postgresql``` and the full URL look like this:
 
 **MySQL:**
@@ -98,6 +111,7 @@ mysql://<username>:<password>@172.17.0.2/jiradb
 ```
 postgresql://<username>:<password>@172.17.0.2/jiradb
 ```
+
 
 ### Environement variables
 
@@ -168,3 +182,7 @@ If you want to contribute to this project or make use of the source code; you'll
 ```
 docker build -t descoped/crowd .
 ```
+
+### Further reading
+
+* Reference to [base image](https://hub.docker.com/r/descoped/atlassian-base/).
