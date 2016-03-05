@@ -10,6 +10,9 @@ For all other aspects about configuring, using and administering Crowd please se
 
 The examples shown below assumes you will use a MySQL database.
 
+> Please pay attention to the IP addresses used in the examples below. The IP `172.17.0.2` refers to the MySQL database and the IP `172.17.0.3` to the newly installed Crowd image. To figure out the IP in your guest OS you can either connect to a running instance by issuing `docker exec -it [container-name] /bin/bash` and do `ifconfig` or locate the IP from `docker inspect [container-name]`.
+
+
 ### Prerequisites
 
 * MySQL 5.5 or 5.6 (please notice that Crowd is not compatible with MySQL 5.7)
