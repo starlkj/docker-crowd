@@ -1,12 +1,12 @@
 # Descoped Docker Crowd
 
-## What is this image?
+## About..
 
 The docker image is based on the standalone install of Crowd and as such consists of several independent components that each have several configurable options and that can also be entirely disabled. The configuration options themselves are set by setting environment variables when running the image
 
 What follows is a short description of each component and the configuration options that affect that component. For all other aspects about configuring, using and administering Crowd please see [The Official Crowd Documentation](https://confluence.atlassian.com/display/CROWD/Crowd+Documentation)
 
-## How to use this image?
+## How to use?
 
 The examples shown below assumes you will use a MySQL database.
 
