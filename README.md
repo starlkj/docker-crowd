@@ -15,6 +15,20 @@ The examples shown below assumes you will use a MySQL database.
 * MySQL 5.6 (it is not compatible with MySQL 5.7)
 * Postgres driver is shipped with the Crowd distribution, so please confer the documentation for compatibility
 
+#### Database Setup
+
+MySQL setup:
+
+```
+$ $DB_PWD=<pwd>
+$ docker run -d -p 3306:3306 --name mysql -v /var/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$DB_PWD mysql/mysql-server:5.6
+$ mysql -u root -p$DB_PWD
+$ CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
+$ CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
+```
+
+If you use a default Docker installation the assigned IP for the first docker container, in this case mysql, the IP 172.17.0.2 will be designated the mysql instance.
+
 ### Execution
 
 Run docker using port 8095 on your host (if available):
@@ -26,10 +40,31 @@ docker run -p 8095:8095 descoped/crowd
 Run with repo outside the container using an external volume:
 
 ```
-$ UID=root
-$ PWD=<pwd>
-$ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://$UID:$PWD@localhost/crowd -e CROWDIDDB_URL=mysql://$UID:$PWD@localhost/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
+$ DB_UID=root
+$ DB_PWD=<pwd>
+$ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://$DB_UID:$DB_PWD@172.17.0.2/crowd -e CROWDIDDB_URL=mysql://$DB_UID:$DB_PWD@172.17.0.2/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
 ```
+
+#### Workaround for error with Remote address
+
+After the initial installation you may experience an issue where you are not allowed to login to Crowd. This is because the Crowd host IP (e.g. 172.17.0.3) is not registered with Crowd. In order to circumvent this issue you need to add your Docker Gateway IP to the Crowd database as follows: 
+
+```
+$ mysql -h 172.17.0.2 -u root -p$PWD crowd;
+SELECT id FROM cwd_application WHERE application_name = "crowd"; (expected return value: 2)
+SELECT id FROM cwd_application WHERE application_name = "crowd-openid-server"; (expected return value: 3)
+INSERT INTO cwd_application_address (APPLICATION_ID, REMOTE_ADDRESS) VALUES (2,'172.17.0.1');
+INSERT INTO cwd_application_address (APPLICATION_ID, REMOTE_ADDRESS) VALUES (3,'172.17.0.1');
+```
+
+After this step the `crowd` instance needs to be restarted:
+
+```
+$ docker crowd stop
+$ docker crowd start
+```
+
+You should now be able to login to Crowd.
 
 ### Docker Volume
 
@@ -43,16 +78,16 @@ http://localhost:8095/
 
 ### Configuration
 
-#### Database Setup
+#### Database connection
 
-Simple MySQL setup:
+The connection to the database can be specified with an URL of the format:
 
 ```
-$ $DB_PWD=<pwd>
-$ docker run -d -p 3306:3306 --name mysql -v /var/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$DB_PWD mysql/mysql-server:5.6
-$ mysql -u root -p$DB_PWD
-$ CREATE DATABASE IF NOT EXISTS crowd character set utf8 collate utf8_bin;
-$ CREATE DATABASE IF NOT EXISTS crowdid character set utf8;
+[database type]://[username]:[password]@[host]:[port]/[database name]
+```
+Where ```database type``` is either ```mysql``` or ```postgresql``` and the full URL might look like this:
+```
+postgresql://jira:jellyfish@172.17.0.2/jiradb
 ```
 
 ### Environement variables
