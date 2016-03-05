@@ -122,7 +122,7 @@ postgresql://<username>:<password>@172.17.0.2/crowd
 
 #### Default welcome splash pages
 
-This component serves just as a welcome page and since it is by default loaded as the root context will be the first thing you see when going to http://localhost:8095. As such it has links to the other components but keep in mind that these links will not be updated should you change the context path of any of the components.
+This component serves just as a welcome page and since it is by default loaded as the root context will be the first thing you see when going to http://192.168.1.2:8095. As such it has links to the other components but keep in mind that these links will not be updated should you change the context path of any of the components.
 
 For anything but a default install it is recommended that you disable this component by setting its context path to the empty string. 
 
