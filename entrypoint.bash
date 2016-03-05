@@ -1,10 +1,7 @@
 #!/bin/bash
 set -e
 
-if [[ "$PATH" == ?(*:)"$JAVA_HOME/bin"?(:*) ]]; then
-    export JAVA_HOME=/opt/jdk
-    export PATH=$PATH:$JAVA_HOME/bin
-fi
+. docker-java-home
 
 #echo "\$1=$1 UID=$UID GID=$GID whoami=`whoami` id=`id` \$@=$@"
 
