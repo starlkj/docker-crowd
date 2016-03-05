@@ -108,13 +108,13 @@ Where ```database type``` is either ```mysql``` or ```postgresql``` and the full
 **MySQL:**
 
 ```
-mysql://<username>:<password>@172.17.0.2/jiradb
+mysql://<username>:<password>@172.17.0.2/crowd
 ```
 
 **PostgreSQL:**
 
 ```
-postgresql://<username>:<password>@172.17.0.2/jiradb
+postgresql://<username>:<password>@172.17.0.2/crowd
 ```
 
 
@@ -187,6 +187,7 @@ If you want to contribute to this project or make use of the source code; you'll
 ```
 docker build -t descoped/crowd .
 ```
+
 
 ### Further reading
 
