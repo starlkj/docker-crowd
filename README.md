@@ -49,7 +49,7 @@ $ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEX
 After the initial installation you may experience an issue where you are not allowed to login to Crowd. This is because the Crowd host IP (e.g. 172.17.0.3) is not registered with Crowd. In order to circumvent this issue you need to add your Docker Gateway IP to the Crowd database as follows: 
 
 ```
-$ mysql -h 172.17.0.2 -u root -p$PWD crowd;
+$ mysql -h 172.17.0.2 -u root -p[db-password] crowd;
 SELECT id FROM cwd_application WHERE application_name = "crowd";               # expected return value: 2
 SELECT id FROM cwd_application WHERE application_name = "crowd-openid-server"; # expected return value: 3
 INSERT INTO cwd_application_address (APPLICATION_ID, REMOTE_ADDRESS) VALUES (2,'172.17.0.1');
