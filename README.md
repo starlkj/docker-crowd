@@ -1,6 +1,6 @@
 # Descoped Docker Crowd
 
-## About..
+## About
 
 The docker image is based on the standalone install of Crowd and as such consists of several independent components that each have several configurable options and that can also be entirely disabled. The configuration options themselves are set by setting environment variables when running the image
 
