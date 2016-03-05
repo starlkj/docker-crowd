@@ -15,7 +15,7 @@ The examples shown below assumes you will use a MySQL database.
 * MySQL 5.5 or 5.6 (please notice that Crowd is not compatible with MySQL 5.7)
 * PostgreSQL 8.4+
 
-> The Postgres driver is shipped with the Crowd distribution, whereas the MySQL driver will be downloaded when running the image.
+> Important notice: The Postgres driver is shipped with the Crowd distribution, whereas the MySQL driver will be downloaded when running the image.
 
 #### Database Setup
 
