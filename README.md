@@ -41,8 +41,6 @@ docker run -p 8095:8095 descoped/crowd
 Run with data outside the container using a volume:
 
 ```
-$ DB_UID=root
-$ DB_PWD=<pwd>
 $ docker run --name crowd -v /var/crowd-home:/var/atlassian-home -e CROWD_CONTEXT=ROOT -e CROWD_URL=http://localhost:8095 -e CROWDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowd -e CROWDIDDB_URL=mysql://[db-username]:[db-password]@172.17.0.2/crowdid -e SPLASH_CONTEXT= -p 8095:8095 descoped/crowd
 ```
 
