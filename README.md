@@ -117,7 +117,7 @@ DEMO_LOGIN_URL | The URL that crowd will redirect the user to this URL if their 
 
 ## Source code
 
-If you want to contribute to this project or make use of the source code; you'll find it on [GitHub]((https://github.com/descoped/docker-crowd).
+If you want to contribute to this project or make use of the source code; you'll find it on [GitHub](https://github.com/descoped/docker-crowd).
 
 ### Building the image
 
