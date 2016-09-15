@@ -2,7 +2,7 @@ FROM descoped/atlassian-base
 MAINTAINER Ove Ranheim <oranheim@gmail.com>
 
 # Install Crowd
-ENV CROWD_VERSION 2.9.1
+ENV CROWD_VERSION 2.10.1
 
 ENV CROWD_INST /opt/crowd
 ENV CROWD_HOME /var/atlassian-home
