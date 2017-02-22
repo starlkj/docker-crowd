@@ -15,6 +15,7 @@ ENV CROWDID_CONTEXT openidserver
 ENV OPENID_CLIENT_CONTEXT openidclient
 ENV DEMO_CONTEXT demo
 ENV SPLASH_CONTEXT ROOT
+ENV MYSQL_CONNECTOR_VERSION 5.1.39
 
 ENV CROWD_URL http://localhost:8095/$CROWD_CONTEXT
 ENV LOGIN_BASE_URL http://localhost:8095
@@ -30,7 +31,11 @@ RUN curl -Lk http://www.atlassian.com/software/crowd/downloads/binary/atlassian-
     && mv $CROWD_INST/apache-tomcat/webapps/ROOT $CROWD_INST/splash-webapp \
     && mv $CROWD_INST/apache-tomcat/conf/Catalina/localhost $CROWD_INST/webapps \
     && mkdir -p $CROWD_INST/apache-tomcat/conf/Catalina/localhost \
-    && touch $CROWD_INST/.crowd-is-not-configured
+    && touch $CROWD_INST/.crowd-is-not-configured \
+    && curl -vL -o /tmp/mysql-connector.tgz https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_CONNECTOR_VERSION.tar.gz \
+    && tar xzf /tmp/mysql-connector.tgz mysql-connector-java-$MYSQL_CONNECTOR_VERSION/mysql-connector-java-$MYSQL_CONNECTOR_VERSION-bin.jar \
+    && mv mysql-connector-java-5.1.39/mysql-connector-java-$MYSQL_CONNECTOR_VERSION-bin.jar  $CROWD_INST/apache-tomcat/lib/mysql-connector-java-$MYSQL_CONNECTOR_VERSION-bin.jar
+
 
 ADD splash-context.xml $CROWD_INST/webapps/splash.xml
 
