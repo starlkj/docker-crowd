@@ -132,6 +132,7 @@ config_line build.properties crowd.url "$CROWD_URL"
 if [ -f "$CROWD_HOME/crowd.properties" ]; then
   config_line $CROWD_HOME/crowd.properties crowd.server.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties crowd.server.url)"
   config_line $CROWD_HOME/crowd.properties application.login.url "$(config_line crowd-webapp/WEB-INF/classes/crowd.properties application.login.url)"
+  config_line $CROWD_HOME/crowd.properties application.password "To7CfmPz"
 fi
 
 rm $CROWD_INST/.crowd-is-not-configured
